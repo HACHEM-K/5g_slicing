@@ -109,8 +109,8 @@ smf:
       dnn: "default"
       qos_profile:
         5qi: 5
-        session_ambr_ul: "50Mbps"
-        session_ambr_dl: "100Mbps"
+        session_ambr_ul: "70Mbps"
+        session_ambr_dl: "50Mbps"
 
 upf:
   support_features:

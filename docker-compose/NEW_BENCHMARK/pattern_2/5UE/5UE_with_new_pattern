@@ -1,0 +1,31 @@
+* Closing connection -1
+[2024-06-12 13:01:38.729] [amf_sbi] [info] Get response with HTTP code (0)
+[2024-06-12 13:01:38.729] [amf_sbi] [info] Cannot get response when calling 
+[2024-06-12 13:01:38.729] [amf_app] [debug] Received SBI_REGISTER_NF_INSTANCE_RESPONSE
+[2024-06-12 13:01:38.729] [amf_app] [debug] Handle NF Instance Registration response
+[2024-06-12 13:01:38.729] [amf_app] [debug] Delete AMF Profile instance...
+[2024-06-12 13:01:38.729] [amf_app] [warning] NF Instance Registration, got issue when registering to NRF, try again ...
+[2024-06-12 13:01:38.729] [amf_app] [debug] Delete AMF Profile instance...
+[2024-06-12 13:01:58.717] [amf_app] [info] 
+   |------------------------------------------------------------------------------------------------------------------------------------------------------------|
+   |----------------------------------------------------------------------gNBs' Information---------------------------------------------------------------------|
+   |  Index |               Status               |              Global Id             |              gNB Name              |                PLMN                |
+   |    1   |              Connected             |               0xE000               |              gnb-rfsim             |               208,95               |
+   |------------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+   |-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+   |---------------------------------------------------------------------UEs' Information----------------------------------------------------------------------|
+   |  Index |     5GMM State     |        IMSI        |        GUTI        |   RAN UE NGAP ID   |   AMF UE NGAP ID   |        PLMN        |       Cell Id      |
+   |    1   |   5GMM-REGISTERED  |   208950000000050  | 2089501004100000001|        0x01        |        0x01        |       208,95       |      0xE00000      |
+   |    2   |   5GMM-REGISTERED  |   208950000000051  | 2089501004100000002|        0x02        |        0x02        |       208,95       |      0xE00000      |
+   |    3   |   5GMM-REGISTERED  |   208950000000052  | 2089501004100000003|        0x03        |        0x03        |       208,95       |      0xE00000      |
+   |    4   |   5GMM-REGISTERED  |   208950000000053  | 2089501004100000004|        0x04        |        0x04        |       208,95       |      0xE00000      |
+   |    5   |   5GMM-REGISTERED  |   208950000000090  | 2089501004100000005|        0x05        |        0x05        |       208,95       |      0xE00000      |
+   |-----------------------------------------------------------------------------------------------------------------------------------------------------------|
+
+[2024-06-12 13:01:58.729] [amf_app] [debug] Send ITTI msg to SBI task to trigger the registration request towards NRF
+[2024-06-12 13:01:58.729] [amf_sbi] [info] Receive Register NF Instance Request, handling ...
+[2024-06-12 13:01:58.729] [amf_sbi] [debug] Send NF Instance Registration to NRF
+[2024-06-12 13:01:58.729] [amf_app] [debug] AMF profile to json:
+ {"amfInfo":{"amfRegionId":"01","amfSetId":"001","guamiList":[{"amfId":"10041","plmnId":{"mcc":"208","mnc":"95"}},{"amfId":"10041","plmnId":{"mcc":"001","mnc":"01"}}]},"capacity":100,"custom_info":null,"heartBeatTimer":50,"ipv4Addresses":["192.168.70.138"],"nfInstanceId":"116b499a-f8b3-4be7-b361-6ff0f6e4b572","nfInstanceName":"OAI-AMF","nfServices":[{"ipEndPoints":[{"ipv4Address":"192.168.70.138","port":8080,"transport":"TCP"}],"nfServiceStatus":"REGISTERED","scheme":"http","serviceInstanceId":"namf_communication","serviceName":"namf_communication","versions":[{"apiFullVersion":"1.0.0","apiVersionInUri":"v1"}]}],"nfStatus":"REGISTERED","nfType":"AMF","priority":1,"sNssais":[{"sd":"ffffff","sst":1},{"sd":"1","sst":1},{"sd":"7b","sst":222},{"sd":"80","sst":128},{"sd":"82","sst":130}]}
+

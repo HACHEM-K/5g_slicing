@@ -1,0 +1,37 @@
+
+			UE5
+18098.384207 [NR_PHY] I Harq round stats for Downlink: 3/0/0
+18098.384209 [NR_PHY] I ============================================
+18098.384292 [NR_PHY] I RSRP = -41 dBm
+18098.388667 [NR_MAC] E [UE 0] SR not served. Triggering of new RA procedure not implemented yet.
+18098.551849 [NR_PHY] I RSRP = -41 dBm
+18098.717399 [NR_PHY] I RSRP = -41 dBm
+			GNB 
+			
+17999.748159 [NR_PHY] I [RAPROC] 823.19 Initiating RA procedure with preamble 11, energy 54.9 dB (I0 0, thres 200), delay 0 start symbol 4 freq index 0
+17999.748262 [NR_MAC] I 823.19 UE RA-RNTI 010f TC-RNTI afe5: Activating RA process index 0
+17999.749302 [NR_MAC] W UE RNTI afe5 824.6: infeasible Msg3 TDA
+17999.750274 [NR_MAC] A UE afe5: 824.7 Generating RA-Msg2 DCI, RA RNTI 0x10f, state 1, CoreSetType 0, RAPID 11
+17999.750286 [NR_MAC] I UE afe5: Msg3 scheduled at 824.17 (824.7 k2 7 TDA 3)
+17999.767012 [NR_MAC] I Adding new UE context with RNTI 0xafe5
+17999.767818 [NR_MAC] I [gNB 0][RAPROC] PUSCH with TC_RNTI 0xafe5 received correctly, adding UE MAC Context RNTI 0xafe5
+17999.767826 [NR_MAC] A [RAPROC] RA-Msg3 received (sdu_lenP 7)
+17999.767893 [RLC] I Activated srb0 for UE 45029
+17999.767908 [RLC] I Added srb 1 to UE 45029
+17999.768029 [NR_MAC] I Activating scheduling RA-Msg4 for TC_RNTI 0xafe5 (state WAIT_Msg3)
+17999.768033 [NR_MAC] W Unexpected ULSCH HARQ PID 0 (have -1) for RNTI 0xafe5 (ignore this warning for RA)
+17999.768036 [NR_RRC] I Decoding CCCH: RNTI afe5, payload_size 6
+17999.768288 [NR_RRC] I Created new UE context: CU UE ID 5 DU UE ID 45029 (rnti: afe5, random ue id e60755f8b9000000)
+17999.768312 [RRC] I activate SRB 1 of UE 5
+17999.768322 [NR_RRC] I rrc_gNB_generate_RRCSetup for RNTI afe5
+17999.768355 [NR_MAC] I No CU UE ID stored for UE RNTI afe5, adding CU UE ID 5
+17999.774034 [NR_MAC] I UE afe5 Generate msg4: feedback at  825.17, payload 169 bytes, next state WAIT_Msg4_ACK
+17999.788905 [NR_MAC] I (UE afe5) Received Nack of RA-Msg4. Preparing retransmission!
+17999.795091 [NR_MAC] I UE afe5 Generate msg4: feedback at  826.17, payload 169 bytes, next state WAIT_Msg4_ACK
+17999.809636 [NR_MAC] I (UE afe5) Received Nack of RA-Msg4. Preparing retransmission!
+17999.815722 [NR_MAC] I UE afe5 Generate msg4: feedback at  827.17, payload 169 bytes, next state WAIT_Msg4_ACK
+17999.830513 [NR_MAC] I (UE afe5) Received Nack of RA-Msg4. Preparing retransmission!
+17999.836826 [NR_MAC] I UE afe5 Generate msg4: feedback at  828.17, payload 169 bytes, next state WAIT_Msg4_ACK
+17999.851758 [NR_MAC] I  829. 4 UE afe5: RA Procedure failed at Msg4!
+18001.255750 [NR_MAC] I Frame.Slot 896.0
+

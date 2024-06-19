@@ -1,0 +1,765 @@
+version: '3.8'
+services:
+    oai-gnb:
+        image: oaisoftwarealliance/oai-gnb:develop
+        privileged: true
+        container_name: rfsim5g-oai-gnb
+        environment: 
+            RFSIMULATOR: server
+            #USE_ADDITIONAL_OPTIONS: --sa -E --rfsim -d --rfsimulator.options chanmod --log_config.global_log_options level,nocolor,time
+            USE_ADDITIONAL_OPTIONS: --sa -E --rfsim -d --log_config.global_log_options level,nocolor,time
+        volumes:
+            - ./ran-conf/gnb.conf:/opt/oai-gnb/etc/gnb.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.153
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-softmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5   
+    oai-nr-ue1:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue1
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue1.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.152
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5  
+    oai-nr-ue2:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue2
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000051 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue11.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.154
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue3:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue3
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000052 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue3.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.154
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue4:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue4
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000053 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue4.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.154
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5               
+    oai-nr-ue5:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue5
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000054 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue5.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.155
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue6:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue6
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000055 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue6.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.156
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue7:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue7
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000056 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue7.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.157
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue8:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue8
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000057 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue8.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.158
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5
+    oai-nr-ue9:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue9
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000058 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue9.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.159
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue10:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue10
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000059 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue10.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.160
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue11:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue11
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000060 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue11.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.161
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue12:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue12
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000061 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue12.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.162
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5   
+    oai-nr-ue13:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue13
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000062 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue13.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.163
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue14:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue14
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000063 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue14.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.164
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue15:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue15
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000064 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue15.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.165
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue16:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue16
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000065 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue16.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.166
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue17:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue17
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000066 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue17.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.167
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue18:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue18
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000067 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue18.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.168
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue19:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue19
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000068 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue19.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.169
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue20:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue20
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000069 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue20.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.170
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue21:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue21
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000070 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue21.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.171
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue22:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue22
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000071 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue22.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.172
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue23:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue23
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000072 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue23.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.173
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue24:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue24
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000073 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue24.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.174
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue25:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue25
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000074 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue25.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.175
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue26:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue26
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000075 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue26.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.176
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue27:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue27
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000076 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue27.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.177
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue28:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue28
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000077 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue28.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.178
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue29:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue29
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000078 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue29.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.179
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue30:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue30
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000079 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue30.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.180
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue31:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue31
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000080 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue31.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.181
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue32:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue32
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000081 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue32.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.182
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue33:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue33
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000082 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue33.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.183
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue34:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue34
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000083 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue34.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.184
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue35:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue35
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000084 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue35.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.185
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue36:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue36
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000085 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue36.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.186
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5 
+    oai-nr-ue37:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue37
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000086 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue37.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.187
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5  
+                                                                                                                                                                                                                                                                                                                     
+networks:
+    public_net:
+        external:
+            name: demo-oai-public-net

@@ -131,6 +131,6 @@ amf:
     - "NIA2"
   supported_encryption_algorithms:
     - "NEA1"
-    - "NEA2"
+    #- "NEA2"
 nssf:
   slice_config_path: /openair-nssf/etc/nssf_slice_config.yaml

@@ -1,0 +1,25 @@
+# pattern1 original 
+      # dl_UL_TransmissionPeriodicity
+      # 0=ms0p5, 1=ms0p625, 2=ms1, 3=ms1p25, 4=ms2, 5=ms2p5, 6=ms5, 7=ms10
+      dl_UL_TransmissionPeriodicity                                 = 6;
+      nrofDownlinkSlots                                             = 7;
+      nrofDownlinkSymbols                                           = 6;
+      nrofUplinkSlots                                               = 2;
+      nrofUplinkSymbols                                             = 4;
+      
+#pattern1 studied
+      # dl_UL_TransmissionPeriodicity
+      # 0=ms0p5, 1=ms0p625, 2=ms1, 3=ms1p25, 4=ms2, 5=ms2p5, 6=ms5, 7=ms10
+          dl_UL_TransmissionPeriodicity                                 = 6;
+          nrofDownlinkSlots                                             = 6;
+          nrofDownlinkSymbols                                           = 4;
+          nrofUplinkSlots                                               = 3;
+          nrofUplinkSymbols                                             = 4;
+#pattern1 throughput
+      # dl_UL_TransmissionPeriodicity
+      # 0=ms0p5, 1=ms0p625, 2=ms1, 3=ms1p25, 4=ms2, 5=ms2p5, 6=ms5, 7=ms10
+          dl_UL_TransmissionPeriodicity                                 = 4;
+          nrofDownlinkSlots                                             = 2;
+          nrofDownlinkSymbols                                           = 4;
+          nrofUplinkSlots                                               = 1;
+          nrofUplinkSymbols                                             = 8;
