@@ -140,10 +140,8 @@ services:
             - ALL
         privileged: true
         networks:
-            public_net: # to connect with NF
+            public_net:
                 ipv4_address: 192.168.70.143
-            public_net_core: # to connect with DN
-                ipv4_address: 192.168.73.145    
     oai_ext_dn:
         image: oaisoftwarealliance/trf-gen-cn5g:latest
         privileged: true
@@ -151,16 +149,20 @@ services:
         container_name: oai-ext-dn
         entrypoint: /bin/bash -c \
               "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE;"\
-              "ip route add 12.1.1.130/32 via 192.168.73.145 dev eth0; sleep infinity"     
+              "ip route add 12.2.1.2/32 via 192.168.70.142 dev eth0;"\
+              "ip route add 12.1.1.130/32 via 192.168.70.143 dev eth0;"\
+              "ip route add 12.1.1.2/32 via 192.168.70.144 dev eth0; ip route; sleep infinity" # i modified this 
         command: ["/bin/bash", "-c", "trap : SIGTERM SIGINT; sleep infinity & wait"]
         healthcheck:
-            test: /bin/bash -c "ping -c 2 192.168.73.145"
+            test: /bin/bash -c "iptables -L -t nat | grep MASQUERADE"
             interval: 10s
             timeout: 5s
             retries: 10
         networks:
-            public_net_core:
-                ipv4_address: 192.168.73.146
+            public_net:
+                ipv4_address: 192.168.70.145
+            #public_net_core:
+             #   ipv4_address: 192.168.73.145
 networks:
     public_net:
         driver: bridge # to make the communication between all NF
@@ -170,11 +172,17 @@ networks:
                 - subnet: 192.168.70.0/24 
         driver_opts:
             com.docker.network.bridge.name: "demo-oai"
-    public_net_core:
-        driver: bridge
-        name: oai-public-core
-        ipam:
-            config:
-                - subnet: 192.168.73.0/24 #### to connect to data network
-        driver_opts:
-            com.docker.network.bridge.name: "cn5g-core"
+    #public_net_access:
+     #   name: oai-public-access
+      #  ipam:
+       #     config:
+        #        - subnet: 192.168.72.0/24 # to check 
+        #driver_opts:
+         #   com.docker.network.bridge.name: "cn5g-access"
+    #public_net_core:
+     #   name: oai-public-core
+      #  ipam:
+       #     config:
+        #        - subnet: 192.168.73.0/24 #### to check 
+        #driver_opts:
+         #   com.docker.network.bridge.name: "cn5g-core"

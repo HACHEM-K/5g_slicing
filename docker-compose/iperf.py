@@ -9,7 +9,7 @@ def run_iperf_client(ue_id, ip_addr):
     log_file = f"ue{ue_id}_iperf.log"
     command = [
         "docker", "exec", f"rfsim5g-oai-nr-ue{ue_id}",
-        "iperf", "-c", "192.168.73.146", "-B", ip_addr, "-p", "5001", "-t", "60", "-i", "1"
+        "iperf", "-c", "192.168.70.145", "-B", ip_addr, "-p", "5001", "-t", "60", "-i", "1"
     ]
     with open(log_file, "w") as f:
         subprocess.run(command, stdout=f, stderr=subprocess.STDOUT)
