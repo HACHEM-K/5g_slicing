@@ -3,17 +3,21 @@
 import subprocess
 import threading
 import csv
+import os
 import time
 
 # Function to run iperf client and log output
 def run_iperf_client(ue_id, ip_addr, step):
-    log_file = f"ue{ue_id}_iperf_step{step}.log"
+    log_file = f"measurement/ue{ue_id}_iperf_step{step}.log"
     command = [
         "docker", "exec", f"rfsim5g-oai-nr-ue{ue_id}",
         "iperf", "-c", "192.168.70.145", "-B", ip_addr, "-p", "5001", "-t", "60", "-i", "1"
     ]
     with open(log_file, "w") as f:
         subprocess.run(command, stdout=f, stderr=subprocess.STDOUT)
+
+# Create measurement directory if it doesn't exist
+os.makedirs("measurement", exist_ok=True)
 
 # List of UE IP addresses
 ue_ips = [
@@ -45,7 +49,8 @@ for step in range(1, 6):
     time.sleep(10)
 
 # Extract and store bandwidth measurements in a CSV file
-with open("bandwidth_measurements.csv", "w", newline='') as csvfile:
+csv_file = "measurement/bandwidth_measurements.csv"
+with open(csv_file, "w", newline='') as csvfile:
     csvwriter = csv.writer(csvfile)
     csvwriter.writerow(["Step", "UE ID", "Bandwidth (bits/sec)"])
 
@@ -53,11 +58,12 @@ with open("bandwidth_measurements.csv", "w", newline='') as csvfile:
         for i in range(1, 17):
             ue_id = f"UE{i}"
             bandwidth = None
-            with open(f"ue{i}_iperf_step{step}.log") as f:
+            log_file = f"measurement/ue{i}_iperf_step{step}.log"
+            with open(log_file) as f:
                 for line in f:
                     if "bits/sec" in line:
                         bandwidth = line.strip().split()[-2] + " " + line.strip().split()[-1]
             csvwriter.writerow([step, ue_id, bandwidth])
 
-print("Bandwidth measurements have been saved to bandwidth_measurements.csv")
+print(f"Bandwidth measurements have been saved to {csv_file}")
 
