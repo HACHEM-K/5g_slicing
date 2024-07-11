@@ -72,11 +72,15 @@ nfs:
     n4:
       interface_name: eth0
       port: 8805
+    #with the scenario rassemblee
+    #n6:
+      #interface_name: eth1
+    #with the scenario normal
     n6:
       interface_name: eth0
-    n9:
-      interface_name: eth0
-      port: 2152
+    #n9:
+      #interface_name: eth0
+      #port: 2152
   pcf:
     host: oai-pcf-slice2
     sbi:

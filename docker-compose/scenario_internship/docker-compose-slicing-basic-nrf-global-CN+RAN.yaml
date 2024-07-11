@@ -1,0 +1,230 @@
+version: '3.8'
+services:
+    mysql:
+        container_name: "mysql"
+        image: mysql:8.0
+        volumes:
+            - ./database/oai_db2.sql:/docker-entrypoint-initdb.d/oai_db.sql
+            - ./healthscripts/mysql-healthcheck2.sh:/tmp/mysql-healthcheck.sh
+        environment:
+            - TZ=Europe/Paris
+            - MYSQL_DATABASE=oai_db
+            - MYSQL_USER=test
+            - MYSQL_PASSWORD=test
+            - MYSQL_ROOT_PASSWORD=linux
+        healthcheck:
+            test: /bin/bash -c "/tmp/mysql-healthcheck.sh"
+            interval: 10s
+            timeout: 5s
+            retries: 30
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.131
+    oai-nssf:
+        container_name: "oai-nssf"
+        image: oaisoftwarealliance/oai-nssf:develop
+        expose:
+            - 80/tcp
+            - 8080/tcp
+        volumes:
+            - ./conf/slicing_base_config.yaml:/openair-nssf/etc/config.yaml
+            - ./conf/nssf_slice_config.yaml:/openair-nssf/etc/nssf_slice_config.yaml
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        cap_drop:
+            - ALL
+        privileged: true
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.132
+    oai_udr:
+        container_name: "oai-udr"
+        image: oaisoftwarealliance/oai-udr:develop
+        expose:
+            - 80/tcp
+            - 8080/tcp
+        volumes:
+            - ./conf/slicing_base_config.yaml:/openair-udr/etc/config.yaml
+        depends_on:
+            - mysql
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.133
+    oai_udm:
+        container_name: "oai-udm"
+        image: oaisoftwarealliance/oai-udm:develop
+        expose:
+            - 80/tcp
+            - 8080/tcp
+        volumes:
+            - ./conf/slicing_base_config.yaml:/openair-udm/etc/config.yaml
+        depends_on:
+            - oai_udr
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.134
+    oai_ausf:
+        container_name: "oai-ausf"
+        image: oaisoftwarealliance/oai-ausf:develop
+        expose:
+            - 80/tcp
+            - 8080/tcp
+        volumes:
+            - ./conf/slicing_base_config.yaml:/openair-ausf/etc/config.yaml
+        depends_on:
+            - oai_udm
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.135
+                ############
+    oai_nrf_slice12:
+        container_name: "oai-nrf-slice12"
+        image: oaisoftwarealliance/oai-nrf:develop
+        expose:
+            - 80/tcp
+            - 8080/tcp
+        volumes:
+            - ./conf/slicing_slice1_config.yaml:/openair-nrf/etc/config.yaml
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.136
+    oai_amf:
+        container_name: "oai-amf"
+        image: oaisoftwarealliance/oai-amf:develop
+        expose:
+            - 80/tcp
+            - 8080/tcp
+            - 38412/sctp
+        volumes:
+            - ./conf/slicing_base_config.yaml:/openair-amf/etc/config.yaml
+        depends_on:
+            - oai_nrf_slice12
+            - oai_ausf
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.138
+    oai_smf_slice2:
+        container_name: "oai-smf-slice2"
+        image: oaisoftwarealliance/oai-smf:develop
+        expose:
+            - 80/tcp
+            - 8080/tcp
+            - 8805/udp
+        volumes:
+            - ./conf/slicing_slice2_config.yaml:/openair-smf/etc/config.yaml
+        depends_on:
+            - oai_amf
+            - oai_nrf_slice12
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.140
+    oai_upf_slice2:
+        container_name: "oai-upf-slice2"
+        image: oaisoftwarealliance/oai-upf:develop
+        expose:
+            - 2152/udp
+            - 8805/udp
+            - 8080/tcp
+        volumes:
+            - ./conf/slicing_slice2_config.yaml:/openair-upf/etc/config.yaml
+        environment:
+            - TZ=Europe/Paris
+        depends_on:
+            - oai_nrf_slice12
+            - oai_smf_slice2
+        cap_add:
+            - NET_ADMIN
+            - SYS_ADMIN
+        cap_drop:
+            - ALL
+        privileged: true
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.143
+            public_net_traffic:
+                ipv4_address: 192.168.73.143    
+    oai_ext_dn:
+        image: oaisoftwarealliance/trf-gen-cn5g:latest
+        privileged: true
+        init: true
+        container_name: oai-ext-dn
+        entrypoint: /bin/bash -c \
+              "iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE;"\
+              "ip route add 12.1.1.130/32 via 192.168.73.143 dev eth0; sleep infinity" # i modified this 
+        command: ["/bin/bash", "-c", "trap : SIGTERM SIGINT; sleep infinity & wait"]
+        healthcheck:
+            #test: /bin/bash -c "iptables -L -t nat | grep MASQUERADE"
+            test: /bin/bash -c "ping -c 2 192.168.73.143"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+        depends_on:
+            - oai_upf_slice2
+        networks:
+            public_net_traffic:
+                ipv4_address: 192.168.73.145
+    oai-gnb:
+        image: oaisoftwarealliance/oai-gnb:develop
+        privileged: true
+        container_name: rfsim5g-oai-gnb
+        environment: 
+            RFSIMULATOR: server
+            #USE_ADDITIONAL_OPTIONS: --sa -E --rfsim -d --rfsimulator.options chanmod --log_config.global_log_options level,nocolor,time
+            USE_ADDITIONAL_OPTIONS: --sa -E --rfsim --log_config.global_log_options level,nocolor,time
+            ASAN_OPTIONS: detect_leaks=0
+        volumes:
+            - ./ran-conf/gnb.conf:/opt/oai-gnb/etc/gnb.conf
+        ## i add this one
+        depends_on: 
+            - oai_ext_dn
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.153
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-softmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5
+    oai-nr-ue1:
+        image: oaisoftwarealliance/oai-nr-ue:develop
+        privileged: true
+        container_name: rfsim5g-oai-nr-ue1
+        environment: 
+            RFSIMULATOR: 192.168.70.153
+            USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+            #USE_ADDITIONAL_OPTIONS: -E --sa --rfsim -d --rfsimulator.serverport 4043 --rfsimulator.options chanmod --telnetsrv -r 106 --numerology 1 --uicc0.imsi 208950000000050 -C 3619200000 --nokrnmod --log_config.global_log_options level,nocolor,time
+        depends_on:
+            - oai-gnb
+        volumes:
+            - ./ran-conf/nr-ue1.conf:/opt/oai-nr-ue/etc/nr-ue.conf
+        ## i add this 
+        devices:
+            - /dev/net/tun:/dev/net/tun
+        cap_drop:
+            - ALL
+        networks:
+            public_net:
+                ipv4_address: 192.168.70.152
+        healthcheck:
+            test: /bin/bash -c "pgrep nr-uesoftmodem"
+            interval: 10s
+            timeout: 5s
+            retries: 5                    
+networks:
+    public_net:
+        driver: bridge # to make the communication between all NF
+        name: demo-oai-public-net
+        ipam:
+            config:
+                - subnet: 192.168.70.0/24 
+        driver_opts:
+            com.docker.network.bridge.name: "demo-oai"
+    public_net_traffic:
+        driver: bridge
+        name: oai-traffic
+        ipam:
+            config:
+                - subnet: 192.168.73.0/24 #### to handle user data 
+        driver_opts:
+            com.docker.network.bridge.name: "5G-traffic"

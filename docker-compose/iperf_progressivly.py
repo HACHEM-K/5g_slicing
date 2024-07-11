@@ -7,8 +7,8 @@ import os
 import time
 
 # Function to run iperf client and log output
-def run_iperf_client(ue_id, ip_addr, step):
-    log_file = f"measurement/ue{ue_id}_iperf_step{step}.log"
+def run_iperf_client(ue_id, ip_addr):
+    log_file = f"measurement/ue{ue_id}_iperf.log"
     command = [
         "docker", "exec", f"rfsim5g-oai-nr-ue{ue_id}",
         "iperf", "-c", "192.168.70.145", "-B", ip_addr, "-p", "5001", "-t", "60", "-i", "1"
@@ -30,14 +30,14 @@ ue_ips = [
 # Start iperf server
 subprocess.Popen(["docker", "exec", "oai-ext-dn", "iperf", "-s", "-i", "1"])
 
-# Perform 5 steps
-for step in range(1, 6):
-    print(f"Starting step {step}")
+# Perform tests progressively with an increasing number of UEs
+for step in range(1, 17):
+    print(f"Starting test with {step} UE(s)")
 
-    # Create and start threads for all iperf clients
+    # Create and start threads for the current number of iperf clients
     threads = []
-    for i, ip in enumerate(ue_ips, start=1):
-        t = threading.Thread(target=run_iperf_client, args=(i, ip, step))
+    for i in range(step):
+        t = threading.Thread(target=run_iperf_client, args=(i + 1, ue_ips[i]))
         threads.append(t)
         t.start()
 
@@ -45,25 +45,26 @@ for step in range(1, 6):
     for t in threads:
         t.join()
 
-    # Wait for a short period before the next step
-    time.sleep(10)
+    # Extract and store bandwidth measurements for the current step
+    csv_file = f"measurement/bandwidth_measurements_step_{step}.csv"
+    with open(csv_file, "w", newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        csvwriter.writerow(["UE ID", "Bandwidth (bits/sec)"])
 
-# Extract and store bandwidth measurements in a CSV file
-csv_file = "measurement/bandwidth_measurements.csv"
-with open(csv_file, "w", newline='') as csvfile:
-    csvwriter = csv.writer(csvfile)
-    csvwriter.writerow(["Step", "UE ID", "Bandwidth (bits/sec)"])
-
-    for step in range(1, 6):
-        for i in range(1, 17):
+        for i in range(1, step + 1):
             ue_id = f"UE{i}"
             bandwidth = None
-            log_file = f"measurement/ue{i}_iperf_step{step}.log"
+            log_file = f"measurement/ue{i}_iperf.log"
             with open(log_file) as f:
                 for line in f:
                     if "bits/sec" in line:
                         bandwidth = line.strip().split()[-2] + " " + line.strip().split()[-1]
-            csvwriter.writerow([step, ue_id, bandwidth])
+            csvwriter.writerow([ue_id, bandwidth])
 
-print(f"Bandwidth measurements have been saved to {csv_file}")
+    print(f"Bandwidth measurements for {step} UE(s) have been saved to {csv_file}")
+
+    # Wait for a short period before the next step
+    time.sleep(10)
+
+print("All bandwidth measurements have been saved.")
 

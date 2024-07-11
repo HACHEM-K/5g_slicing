@@ -7,13 +7,9 @@ services:
         environment: 
             RFSIMULATOR: server
             #USE_ADDITIONAL_OPTIONS: --sa -E --rfsim -d --rfsimulator.options chanmod --log_config.global_log_options level,nocolor,time
-            USE_ADDITIONAL_OPTIONS: --sa -E --rfsim --log_config.global_log_options level,nocolor,time
-            ASAN_OPTIONS: detect_leaks=0
+            USE_ADDITIONAL_OPTIONS: --sa -E --rfsim --e2_agent.enable --log_config.global_log_options level,nocolor,time
         volumes:
             - ./ran-conf/gnb.conf:/opt/oai-gnb/etc/gnb.conf
-        ## i add this one
-        #depends_on: 
-            #- oai-ext-dn
         networks:
             public_net:
                 ipv4_address: 192.168.70.153
@@ -21,12 +17,7 @@ services:
             test: /bin/bash -c "pgrep nr-softmodem"
             interval: 10s
             timeout: 5s
-            retries: 5
-        #deploy:
-            #resources:
-                #limits:
-                    #cpus: '4'
-                    #memory: 6g      
+            retries: 5   
     oai-nr-ue1:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -39,9 +30,6 @@ services:
             - oai-gnb
         volumes:
             - ./ran-conf/nr-ue1.conf:/opt/oai-nr-ue/etc/nr-ue.conf
-        ## i add this 
-        cap_drop:
-            - ALL
         networks:
             public_net:
                 ipv4_address: 192.168.70.152
@@ -49,12 +37,7 @@ services:
             test: /bin/bash -c "pgrep nr-uesoftmodem"
             interval: 10s
             timeout: 5s
-            retries: 5
-        #deploy:
-            #resources:
-                #limits:
-                   # cpus: '2'
-                    #memory: 2g
+            retries: 5  
     oai-nr-ue2:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -75,11 +58,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5 
-        #deploy:
-            #resources:
-             #   limits:
-              #      cpus: '2'
-               #     memory: 2g    
     oai-nr-ue3:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -100,11 +78,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5 
-        #deploy:
-            #resources:
-              #  limits:
-                #    cpus: '2'
-                 #   memory: 2g    
     oai-nr-ue4:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -124,12 +97,7 @@ services:
             test: /bin/bash -c "pgrep nr-uesoftmodem"
             interval: 10s
             timeout: 5s
-            retries: 5
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g               
+            retries: 5               
     oai-nr-ue5:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -150,11 +118,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5                                                                                                                                                                                                                                                                                                      
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g
     oai-nr-ue6:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -174,12 +137,7 @@ services:
             test: /bin/bash -c "pgrep nr-uesoftmodem"
             interval: 10s
             timeout: 5s
-            retries: 5     
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g       
+            retries: 5        
     oai-nr-ue7:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -200,11 +158,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5 
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g    
     oai-nr-ue8:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -225,11 +178,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g    
     oai-nr-ue9:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -250,11 +198,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5 
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g    
     oai-nr-ue10:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -275,11 +218,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5 
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g    
     oai-nr-ue11:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -300,11 +238,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5 
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g    
     oai-nr-ue12:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -325,11 +258,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5  
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g    
     oai-nr-ue13:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -350,11 +278,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5 
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g    
     oai-nr-ue14:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -375,11 +298,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5 
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g    
     oai-nr-ue15:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -400,11 +318,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5 
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g    
     oai-nr-ue16:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
@@ -425,11 +338,6 @@ services:
             interval: 10s
             timeout: 5s
             retries: 5 
-        deploy:
-            resources:
-                limits:
-                    cpus: '2'
-                    memory: 2g    
     oai-nr-ue17:
         image: oaisoftwarealliance/oai-nr-ue:develop
         privileged: true
